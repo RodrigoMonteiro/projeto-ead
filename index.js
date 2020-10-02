@@ -7,6 +7,7 @@ app.db = db
 // Vai encadear para "carregar as dependências e injetar no nosso app"
 consign()
 .then('./config/middlewares.js')
+.then('./api/validation.js')
 .then('./api')
 .then('./config/routes.js')
 .into(app)
