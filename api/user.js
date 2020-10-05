@@ -44,25 +44,48 @@ module.exports = app => {
 
         //realizando de fato o update
         if (user.id) {
-            app.db('users')
+            await app.db('users')
                 .update(user)
                 .where({ id: user.id })
                 .then(_ => res.status(204).send())
                 .catch(err => res.status(500))
         } else {
             // Inserindo o usuário
-            app.db('users')
+            await app.db('users')
                 .insert(user)
                 .then(_ => res.status(204).send())
                 .catch(err => res.status(500).send(err))
         }
     }
 
-    const get = (req, res) => {
-        app.db('users')
+    const get = async (req, res) => {
+        await app.db('users')
             .select('id', 'name', 'email', 'admin')
             .then(users => res.json(users))
             .catch(err => res.status(500).send(err))
     }
-    return { save, get }
+
+    const getById = async (req, res) => {
+        await app.db('users')
+            .where({ id: req.params.id }).first()
+            .select('id', 'name', 'email', 'admin')
+            .then(users => res.json(users))
+            .catch(err => res.status(500).send(err))
+
+    }
+
+    const remove = async (req, res) => {
+        try {
+            existsOrError(req.params.id, "Código do usuário não informado!")
+
+            const rowDeleted = await app.db('asers')
+                .where({ id: req.params.id }).del()
+            existsOrError(rowDeleted, 'Usuário não encontrado!')
+            res.status(204).send()
+
+        } catch (msg) {
+            res.status(400).send(msg)
+        }
+    }
+    return { save, get, remove, getById }
 }
