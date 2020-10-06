@@ -17,4 +17,14 @@ module.exports = app => {
         .get(app.api.aula.getById)
         .put(app.api.aula.save)
         .delete(app.api.aula.remove)
+
+
+    app.route('/atividades')
+        .get(app.api.atividade.get)
+        .post(app.api.atividade.save)
+
+    app.route('/atividades/:id')
+        .get(app.api.atividade.getById)
+        .post(app.api.atividade.save)
+        .delete(app.api.atividade.remove)
 }
