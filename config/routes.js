@@ -1,4 +1,9 @@
 module.exports = app => {
+    
+    app.post('/signup', app.api.user.save)
+    app.post('/signin', app.api.auth.signin)
+    app.post('/validateToken', app.api.auth.validateToken)
+    
     app.route('/users')
         // Podemos fazer desta forma graças a o cosign
         .post(app.api.user.save)
@@ -27,4 +32,7 @@ module.exports = app => {
         .get(app.api.atividade.getById)
         .post(app.api.atividade.save)
         .delete(app.api.atividade.remove)
+
+        app.route('/aulas/:id/atividades')
+        .get(app.api.atividade.getByAula)
 }

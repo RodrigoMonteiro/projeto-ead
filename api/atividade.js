@@ -1,5 +1,5 @@
 module.exports = app => {
-    const { existsOrError} = app.api.validation
+    const { existsOrError } = app.api.validation
 
 
     const save = async (req, res) => {
@@ -70,5 +70,18 @@ module.exports = app => {
             })
             .catch(err => res.status(500).send(err))
     }
-    return { save, get, getById, remove }
+
+
+
+// Listas as atividades de uma aula (Teste)
+    const getByAula = async (req, res) => {
+        const aula = req.params.id
+        await app.db('atividades').where({ aula_id: aula }).select('nome_atividade', 'data_entrega')
+            .then(aulas => res.json(aulas))
+            .catch(err => res.status(500))
+    }
+
+
+
+    return { save, get, getById, remove, getByAula }
 }
